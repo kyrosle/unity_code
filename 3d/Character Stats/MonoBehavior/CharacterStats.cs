@@ -13,14 +13,19 @@ public class CharacterStats : MonoBehaviour
     public CharacterData_SO characterData;
     // 通过 maxHealth 读到 characterData的数据
     public AttackData_SO attackData;
+    public AttackData_SO baseAttackData;
+    private RuntimeAnimatorController baseAnimator;
 
-    [HideInInspector]
+    [Header("weapon")] public Transform weaponSlot;
+        [HideInInspector]
     public bool isCritical; // 判断是否暴击
     
     void Awake() {
         // 模板数据 -- 使相同对象敌人的数据不共串
         if(templateData!=null)
             characterData=Instantiate(templateData);
+        baseAttackData = Instantiate(attackData);
+        baseAnimator = GetComponent<Animator>().runtimeAnimatorController;
     }
     /*
         characterData 参数
@@ -29,7 +34,7 @@ public class CharacterStats : MonoBehaviour
         BaseDefence
         CurrentDefence
     */
-#region Read from Data_SO
+    #region Read from Data_SO
     public float MaxHealth{
         get// 读取
         {
@@ -55,8 +60,8 @@ public class CharacterStats : MonoBehaviour
         get{if(characterData!=null)return characterData.currentDefence;else return 0;}
         set{characterData.baseDefence=value;}
     }
-#endregion
-#region  Character Combat
+#endregion  
+    #region  Character Combat
     // 两个人攻击的时候
     // 伤害=攻击者的攻击力-防御者的防御力
     // 获得谁攻击谁-两个人的属性状态
@@ -111,6 +116,62 @@ public class CharacterStats : MonoBehaviour
         return (int)coreDamage;
     }
 
+    #endregion
+    #region weapon
+
+    public void ChangeWeapon(ItemDate_SO data)
+    {
+        UnEquipWeapon();
+        EquipWeapon(data);
+    }
+    public void EquipWeapon(ItemDate_SO data)
+    {
+        // Debug.Log("use Equip!!!");
+        if (data == null)
+        {
+            // Debug.Log("null date");
+            return;
+        }
+
+        if (data.weaponPrefab != null)
+        {
+            Instantiate(data.weaponPrefab, weaponSlot);
+        }
+        //TODO: 更新属性
+        //TODO:切换动画
+        attackData.ApplyAttackData(data.attackDataSo);
+        GetComponent<Animator>().runtimeAnimatorController = data.weaponAnimator;
+    }
+
+    public void UnEquipWeapon()
+    {
+        if (weaponSlot.transform.childCount != 0)
+        {
+            for (int i = 0; i < weaponSlot.transform.childCount; i++)
+            {
+                Destroy(weaponSlot.transform.GetChild(i).gameObject);
+            }
+        }
+        attackData.ApplyAttackData(baseAttackData);
+        //TODO:切换动画
+        GetComponent<Animator>().runtimeAnimatorController = baseAnimator;
+    }
+
+    #endregion
+
+    #region Apply item Change
+
+    public void ApplyHealth(int amount)
+    {
+        if (CurrentHealth + amount <= MaxHealth)
+        {
+            CurrentHealth += amount;
+        }
+        else
+        {
+            CurrentHealth = MaxHealth;
+        }
+    }
     #endregion
 }
 /*

@@ -8,7 +8,7 @@ public class GameManager : Singleton<GameManager>
 {
     public CharacterStats playerState;
 
-    private CinemachineFreeLook followcam;
+    private CinemachineFreeLook _followcam;
     // 广播列表
     [SerializeField] List<IEndGameObserver>endGameObservers=new List<IEndGameObserver>();
 
@@ -18,16 +18,15 @@ public class GameManager : Singleton<GameManager>
         DontDestroyOnLoad(this);
     }
 
-    public void RigisterPlayer(CharacterStats player){
+    public void RegistersPlayer(CharacterStats player){
         playerState=player;
         
-        followcam = FindObjectOfType<CinemachineFreeLook>();
+        _followcam = FindObjectOfType<CinemachineFreeLook>();
 
-        if (followcam != null)
+        if (_followcam != null)
         {
-            followcam.Follow = playerState.transform;
-            followcam.LookAt = playerState.transform.GetChild(3).transform;
-
+            _followcam.Follow = playerState.transform;
+            _followcam.LookAt = playerState.transform.GetChild(3).transform;
         }
     }
 

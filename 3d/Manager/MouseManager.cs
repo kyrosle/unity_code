@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 // 使用event
 //using UnityEngine.Events;
 
@@ -32,7 +33,7 @@ using System;
     protected override void Awake()
     {
         base.Awake();
-       DontDestroyOnLoad(this);
+        DontDestroyOnLoad(this);
     }
     // private void Awake()
     // {
@@ -44,7 +45,7 @@ using System;
     private void Update()
     {
         SetCursorTexture();
-     
+        if (InteractWithUI()) return;
         MouseControl();
     }
 
@@ -69,6 +70,9 @@ using System;
                     break;
                 case"Portal":
                     Cursor.SetCursor(doorway,new Vector2(16,16),CursorMode.Auto);
+                    break;
+                case"Item":
+                    Cursor.SetCursor(point,new Vector2(16,16),CursorMode.Auto);
                     break;
                 default:
                     Cursor.SetCursor(arrow,new Vector2(16,16),CursorMode.Auto);
@@ -96,7 +100,21 @@ using System;
                 // invoke 防 空 执行
                 onMouseClicked?.Invoke(hitinfo.point);
             }
+            if(hitinfo.collider.gameObject.CompareTag("Item")){
+                // invoke 防 空 执行
+                onMouseClicked?.Invoke(hitinfo.point);
+            }
         }
+    }
+
+    bool InteractWithUI()
+    {
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        {
+            return true;
+        }
+        else
+            return false;
     }
 }
 

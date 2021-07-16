@@ -15,8 +15,6 @@ public class PlayerController : MonoBehaviour
     private bool isdeath;
     private float stopDistance;
 
-    [Header("show settings")] 
-    public bool CanMove;
     private void Awake()
     {
         agent=GetComponent<NavMeshAgent>();
@@ -24,16 +22,21 @@ public class PlayerController : MonoBehaviour
         characterStats=GetComponent<CharacterStats>();
 
         stopDistance=agent.stoppingDistance;
+        
+        // 游戏场景测试用
+        MouseManager.Instance.onMouseClicked+=MoveToTarget;
+        MouseManager.Instance.OnEnemyClicked+=EventAttack;    
+        GameManager.Instance.RegistersPlayer(characterStats); // 死了就 广播   
     }
 
     // 场景加载
-    private void OnEnable()
-    {
-        // 只要事件一启用就会调用 MoveToTarget,EventAttack
-        MouseManager.Instance.onMouseClicked+=MoveToTarget;
-        MouseManager.Instance.OnEnemyClicked+=EventAttack;    
-        GameManager.Instance.RigisterPlayer(characterStats); // 死了就 广播   
-    }
+    // private void OnEnable()
+    // {
+    //     // 只要事件一启用就会调用 MoveToTarget,EventAttack
+    //     MouseManager.Instance.onMouseClicked+=MoveToTarget;
+    //     MouseManager.Instance.OnEnemyClicked+=EventAttack;    
+    //     GameManager.Instance.RegistersPlayer(characterStats); // 死了就 广播   
+    // }
 
     private void Start()
     {
@@ -49,7 +52,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        CanMove = agent.isStopped;
         // 简单写法
         isdeath=characterStats.CurrentHealth==0;
 
@@ -70,6 +72,7 @@ public class PlayerController : MonoBehaviour
 
         LastAttackTime-=Time.deltaTime;
     }
+    
    private void SwitchAnimation(){
         // 把vector3的值(agent.velcoity)转化为浮点值
         // 用于控制人物动画 move-idle

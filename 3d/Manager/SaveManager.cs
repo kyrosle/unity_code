@@ -69,16 +69,25 @@ PlayerPrefs
 class in UnityEngine
 描述
 `PlayerPrefs` is a class that stores Player preferences between game sessions. It can store string, float and integer values into the user’s platform registry.
-Unity stores `PlayerPrefs` data differently based on which operating system the application runs on. In the file paths given on this page, the company name and product name are the names you set in Unity’s Player Settings.
+Unity stores `PlayerPrefs` data differently based on which operating system the application runs on. In the file paths given on this page, 
+the company name and product name are the names you set in Unity’s Player Settings.
 Standalone Player storage location
-On macOS, PlayerPrefs are stored in ~/Library/Preferences/com.ExampleCompanyName.ExampleProductName.plist. Unity uses the same .plist file for projects in the Editor and standalone Players.
+On macOS, PlayerPrefs are stored in ~/Library/Preferences/com.ExampleCompanyName.ExampleProductName.plist. Unity uses the same .
+plist file for projects in the Editor and standalone Players.
+
 On Windows, PlayerPrefs are stored in HKCU\Software\ExampleCompanyName\ExampleProductName key.
+
 On Linux, PlayerPrefs are stored in ~/.config/unity3d/ExampleCompanyName/ExampleProductName.
+
 On Windows Store Apps, PlayerPrefs are stored in %userprofile%\AppData\Local\Packages\[ProductPackageId]\LocalState\playerprefs.dat.
+
 On Windows Phone 8, Unity stores PlayerPrefs data in the application's local folder. See Directory.localFolder for more information.
+
 On Android, PlayerPrefs are stored in /data/data/pkg-name/shared_prefs/pkg-name.v2.playerprefs.xml. Unity stores PlayerPrefs data on the device, in SharedPreferences. C#, JavaScript, Android Java and native code can all access the PlayerPrefs data.
+
 On WebGL, Unity stores PlayerPrefs data using the browser's IndexedDB API. For more information, see IndexedDB.
 In-Editor Play mode storage location
+
 On macOS, PlayerPrefs are stored in /Library/Preferences/[bundle identifier].plist.
 On Windows, PlayerPrefs are stored in HKCU\Software\Unity\UnityEditor\ExampleCompanyName\ExampleProductName key. Windows 10 uses the application’s PlayerPrefs names. For example, Unity adds a DeckBase string and converts it into DeckBase_h3232628825. The application ignores the extension.
 Unity stores PlayerPrefs in a local registry, without encryption. Do not use PlayerPrefs data to store sensitive data.

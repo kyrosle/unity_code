@@ -24,13 +24,16 @@ public class ScenceController : Singleton<ScenceController>,IEndGameObserver
         GameManager.Instance.AddObserver(this);
     }
 
+    // 传输方法
     public void TrnasitionToDestination(TransitionPoint transitionPoint)
     {
         switch (transitionPoint.transitionType)
         {
+            // 同一场景的传输
             case TransitionPoint.TransitionType.SameScene:
                 StartCoroutine(Transition(SceneManager.GetActiveScene().name, transitionPoint.destinationTag));
                 break;
+            // 跨场景传输
             case TransitionPoint.TransitionType.DifferentScene:
                 StartCoroutine(Transition(transitionPoint.sceneName, transitionPoint.destinationTag));
                 break;
@@ -42,6 +45,8 @@ public class ScenceController : Singleton<ScenceController>,IEndGameObserver
         // FIXME:可以加入fader
         // TODO: 保存数据
         SaveManager.Instance.SavePlayerData();
+        InventoryManager.Instance.SavaData();
+        
         if (SceneManager.GetActiveScene().name != sceneName)
         {
             ScenceFade fade = Instantiate(scenceFaderPrefab);
@@ -107,6 +112,7 @@ public class ScenceController : Singleton<ScenceController>,IEndGameObserver
             // 保存游戏
             yield return StartCoroutine(fade.FadeIn(2.5f));
             SaveManager.Instance.SavePlayerData();
+            InventoryManager.Instance.SavaData();
             yield break;
         }
     }

@@ -16,4 +16,16 @@ public class AttackData_SO : ScriptableObject
    public float criticalMultiplier;// 暴击后的加成百分比
    public float cirticalChance;// 暴击率
 
+   public void ApplyAttackData(AttackData_SO weapon)
+   {
+      attackRanger = weapon.attackRanger;
+      skillRanger = weapon.skillRanger;
+      coolDown = weapon.coolDown;
+
+      minDamage += weapon.minDamage;
+      maxDamage += weapon.maxDamage;
+
+      criticalMultiplier = weapon.criticalMultiplier;
+      cirticalChance = weapon.cirticalChance;
+   }
 }
