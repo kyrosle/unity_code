@@ -1,0 +1,3 @@
+[{"dormNum":"169","grade":"university","iD":1,"name":"kyros","phoneNum":"123","userType":"STUDENT"}]
+[{"iD":1,"name":"teacher","phoneNum":"233","userType":"TEACHER"}]
+[{"iD":1,"name":"manager","phoneNum":"886","userType":"MANAGER"}]
