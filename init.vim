@@ -11,6 +11,9 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
+"show loading thime
+Plug 'dstein64/vim-startuptime'
+
 Plug 'rust-lang/rust.vim'
 
 "theme
@@ -444,10 +447,6 @@ endtry
 
 lua require('neoscroll').setup({mappings = {'<C-u>', '<C-d>', '<C-b>', '<C-f>', '<C-y>', '<C-e>', 'zt', 'zz', 'zb'},hide_coursof = true,stop_eof = true, use_local_scrolloff = false, respect_scrolloff = false, cursor_scrolls_alone = true, easing_function = nil, pre_hook = nil, post_hook = nil, })
 
-set cursorline
-hi CursorLine cterm=NONE ctermbg=darkred ctermfg=white
-hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white
-
 " === rust.vim 配置 ===
 syntax enable
 filetype plugin indent on
@@ -472,8 +471,6 @@ map <leader>. <leader>c<leader>
 map <leader>y :!clip.exe < %<CR>
 map <leader>u :!make<CR>
 map <leader>i :!make clean<CR>
-
-
 map <C-delete> :bd<CR>
 map <C-h> :bp<CR>
 map <C-l> :bn<CR>
