@@ -464,15 +464,19 @@ nnoremap <M-r> :RustRun<CR>
 nnoremap <M-t> :RustTest<CR>
 
 
+
 inoremap jj <Esc> "将jj映射到Esc
-set mouse=a
+inoremap <C-h> <Left>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
 map <C-s> :w<CR>
 map <leader>. <leader>c<leader> 
 map <leader>y :!clip.exe < %<CR>
 map <leader>u :!make<CR>
 map <leader>i :!make clean<CR>
 map <C-delete> :bd<CR>
-map <C-h> :bp<CR>
-map <C-l> :bn<CR>
+map <A-h> :bp<CR>
+map <A-l> :bn<CR>
 map <C-insert> gd
 map <C-n> :nohl<CR>
