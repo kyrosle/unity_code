@@ -11,6 +11,9 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
+"auto save
+Plug 'Pocco81/AutoSave.nvim'
+
 "show loading thime
 Plug 'dstein64/vim-startuptime'
 
@@ -463,9 +466,29 @@ nnoremap <M-r> :RustRun<CR>
 " 使用 `:verbose nmap` 则显示所有快捷键绑定信息
 nnoremap <M-t> :RustTest<CR>
 
+lua << EOF
+local autosave = require("autosave")
 
+autosave.setup(
+    {
+        enabled = true,
+        execution_message = "AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"),
+        events = {"InsertLeave", "TextChanged"},
+        conditions = {
+            exists = true,
+            filename_is_not = {},
+            filetype_is_not = {},
+            modifiable = true
+        },
+        write_all_buffers = false,
+        on_off_commands = true,
+        clean_command_line_interval = 0,
+        debounce_delay = 135
+    }
+)
+EOF
 
-inoremap jj <Esc> "将jj映射到Esc
+inoremap jk <Esc> "将jj映射到Esc
 inoremap <C-h> <Left>
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
@@ -480,3 +503,4 @@ map <A-h> :bp<CR>
 map <A-l> :bn<CR>
 map <C-insert> gd
 map <C-n> :nohl<CR>
+
