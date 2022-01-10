@@ -2,7 +2,6 @@ let g:indent_guides_guide_size = 1  " 指定对齐线的尺寸
 let g:indent_guides_start_level = 2  " 从第二层开始可视化显示缩进
 let g:coc_disable_startup_warning = 1
 let mapleader=" "
-map <leader>wq :wq<CR>
 call plug#begin('~/.vim/plugged')
 
 if has('nvim')
