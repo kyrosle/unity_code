@@ -1,22 +1,17 @@
 let g:indent_guides_guide_size = 1  " 指定对齐线的尺寸
 let g:indent_guides_start_level = 2  " 从第二层开始可视化显示缩进
 let g:indentLine_fileTypeExclude = ['dashboard']
+
 let g:coc_disable_startup_warning = 1
+
 let mapleader=" "
+
 call plug#begin('~/.vim/plugged')
 
-if has('nvim')
-    " requires
-    Plug 'kyazdani42/nvim-web-devicons' " for file icons
-    Plug 'kyazdani42/nvim-tree.lua'
-  " Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-  " Plug 'kristijanhusak/defx-icons'
-  " Plug 'kristijanhusak/defx-git'
-else
-  Plug 'Shougo/defx.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+" 预览文件树
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
+
 " star view
 Plug 'glepnir/dashboard-nvim'
 Plug 'nvim-lua/plenary.nvim'
@@ -30,6 +25,12 @@ Plug 'akinsho/bufferline.nvim'
 
 " lightline 
 Plug 'itchyny/lightline.vim'
+
+" nord-vim
+Plug 'arcticicestudio/nord-vim'
+
+" vim-one theme
+Plug 'rakr/vim-one'
 
 " monokai theme
 Plug 'crusoexia/vim-monokai'
@@ -90,19 +91,40 @@ call plug#end()
 " dashboard settings
 " Default value is clap
 let g:dashboard_default_executive ='telescope'
-let g:dashboard_custom_header = [
-\ '                                                       ', 
-\ '                                                       ', 
-\ '                                                       ', 
-\ ' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
-\ ' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
-\ ' ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║',
-\ ' ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║',
-\ ' ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║',
-\ ' ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝',
-\ '                                                       ', 
-\ '                                                       ', 
-\]
+let g:dashboard_custom_header =<< trim END
+=================     ===============     ===============   ========  ========
+\\ . . . . . . .\\   //. . . . . . .\\   //. . . . . . .\\  \\. . .\\// . . //
+||. . ._____. . .|| ||. . ._____. . .|| ||. . ._____. . .|| || . . .\/ . . .||
+|| . .||   ||. . || || . .||   ||. . || || . .||   ||. . || ||. . . . . . . ||
+||. . ||   || . .|| ||. . ||   || . .|| ||. . ||   || . .|| || . | . . . . .||
+|| . .||   ||. _-|| ||-_ .||   ||. . || || . .||   ||. _-|| ||-_.|\ . . . . ||
+||. . ||   ||-'  || ||  `-||   || . .|| ||. . ||   ||-'  || ||  `|\_ . .|. .||
+|| . _||   ||    || ||    ||   ||_ . || || . _||   ||    || ||   |\ `-_/| . ||
+||_-' ||  .|/    || ||    \|.  || `-_|| ||_-' ||  .|/    || ||   | \  / |-_.||
+||    ||_-'      || ||      `-_||    || ||    ||_-'      || ||   | \  / |  `||
+||    `'         || ||         `'    || ||    `'         || ||   | \  / |   ||
+||            .===' `===.         .==='.`===.         .===' /==. |  \/  |   ||
+||         .=='   \_|-_ `===. .==='   _|_   `===. .===' _-|/   `==  \/  |   ||
+||      .=='    _-'    `-_  `='    _-'   `-_    `='  _-'   `-_  /|  \/  |   ||
+||   .=='    _-'          '-__\._-'         '-_./__-'         `' |. /|  |   ||
+||.=='    _-'                                                     `' |  /==.||
+=='    _-'                        N E O V I M                         \/   `==
+\   _-'                                                                `-_   /
+ `''                                                                      ``'
+END
+"let g:dashboard_custom_header = [
+"\ '                                                       ', 
+"\ '                                                       ', 
+"\ '                                                       ', 
+"\ ' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
+"\ ' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
+"\ ' ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║',
+"\ ' ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║',
+"\ ' ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║',
+"\ ' ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝',
+"\ '                                                       ', 
+"\ '                                                       ', 
+"\]
 "eg : "SPC mean the leaderkey
 let g:mapleader="\<Space>"
 let g:dashboard_default_executive ='telescope'
@@ -130,16 +152,33 @@ lua << EOF
 require("bufferline").setup{}
 EOF
 
-" hydrangea settings
-colorscheme hydrangea
+"nerd-vim
+"colorscheme nord 
+
+" vim-one settings
+colorscheme one
+set background=dark " for the dark version
 let g:lightline = {
-      \ 'colorscheme': 'hydrangea',
+      \ 'colorscheme': 'molokai',
       \ 'component': {
       \   'readonly': '%{&readonly?"":""}',
       \ },
       \ 'separator':    { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' },
       \ }
+
+" set background=light " for the light version
+
+" hydrangea settings
+"colorscheme hydrangea
+"let g:lightline = {
+      "\ 'colorscheme': 'hydrangea',
+      "\ 'component': {
+      "\   'readonly': '%{&readonly?"":""}',
+      "\ },
+      "\ 'separator':    { 'left': '', 'right': '' },
+      "\ 'subseparator': { 'left': '', 'right': '' },
+      "\ }
 
 " 设置状态栏
 let g:airline#extensions#tabline#enabled = 1
@@ -362,13 +401,20 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 filetype plugin on
 " 设置为双字宽显示，否则无法完整显示如:☆
 " set ambiwidth=double
+
 set t_ut= " 防止vim背景颜色错误
+set relativenumber "相对行号
 set showmatch " 高亮匹配括号
+set cursorline "高亮所在行
+set wrap "设置换行
+set showcmd "设置按下的键
+set nobackup "不需要备份文件
 set matchtime=1
 set report=0
 set ignorecase
 set nocompatible
 set noeb
+set tabstop=4 "设置TAB宽度
 set softtabstop=4
 set shiftwidth=4
 set nobackup
@@ -386,13 +432,24 @@ set t_Co=256 "指定配色方案为256
 set mouse=a "设置可以在VIM使用鼠标
 set selection=exclusive
 set selectmode=mouse,key
-set tabstop=4 "设置TAB宽度
 set history=1000 "设置历史记录条数   
 " 配色方案
 " let g:seoul256_background = 234
-" colo monokai
-" set background=dark
 set shortmess=atl
+"ssh 远程粘贴板
+"if executable('clipboard-provider')
+    "let g:clipboard = {
+          "\ 'name': 'myClipboard',
+          "\     'copy': {
+          "\         '+': 'clipboard-provider copy',
+          "\         '*': 'env COPY_PROVIDERS=tmux clipboard-provider copy',
+          "\     },
+          "\     'paste': {
+          "\         '+': 'clipboard-provider paste',
+          "\         '*': 'env COPY_PROVIDERS=tmux clipboard-provider paste',
+          "\     },
+          "\ }
+"endif
 "共享剪切板
 set clipboard+=unnamed 
 set cmdheight=3
@@ -438,7 +495,6 @@ require('neoscroll').setup({
     pre_hook = nil,              -- Function to run before the scrolling animation starts
     post_hook = nil,              -- Function to run after the scrolling animation ends
 })
-
 EOF
 
 " === rust.vim 配置 ===
