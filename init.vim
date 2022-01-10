@@ -1,5 +1,6 @@
 let g:indent_guides_guide_size = 1  " 指定对齐线的尺寸
 let g:indent_guides_start_level = 2  " 从第二层开始可视化显示缩进
+let g:indentLine_fileTypeExclude = ['dashboard']
 let g:coc_disable_startup_warning = 1
 let mapleader=" "
 call plug#begin('~/.vim/plugged')
@@ -89,6 +90,19 @@ call plug#end()
 " dashboard settings
 " Default value is clap
 let g:dashboard_default_executive ='telescope'
+let g:dashboard_custom_header = [
+\ '                                                       ', 
+\ '                                                       ', 
+\ '                                                       ', 
+\ ' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
+\ ' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
+\ ' ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║',
+\ ' ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║',
+\ ' ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║',
+\ ' ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝',
+\ '                                                       ', 
+\ '                                                       ', 
+\]
 "eg : "SPC mean the leaderkey
 let g:mapleader="\<Space>"
 let g:dashboard_default_executive ='telescope'
