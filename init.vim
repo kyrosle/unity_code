@@ -4,50 +4,136 @@ let g:coc_disable_startup_warning = 1
 let mapleader=" "
 map <leader>wq :wq<CR>
 call plug#begin('~/.vim/plugged')
+
 if has('nvim')
-  Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+    " requires
+    Plug 'kyazdani42/nvim-web-devicons' " for file icons
+    Plug 'kyazdani42/nvim-tree.lua'
+  " Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+  " Plug 'kristijanhusak/defx-icons'
+  " Plug 'kristijanhusak/defx-git'
 else
   Plug 'Shougo/defx.nvim'
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
+" star view
+Plug 'glepnir/dashboard-nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
+
+" bufferline
+Plug 'kyazdani42/nvim-web-devicons' " Recommended (for coloured icons)
+" Plug 'ryanoasis/vim-devicons' Icons without colours
+Plug 'akinsho/bufferline.nvim'
+
+" lightline 
+Plug 'itchyny/lightline.vim'
+
+" monokai theme
+Plug 'crusoexia/vim-monokai'
+
+" gruvbox theme
+Plug 'sainnhe/gruvbox-material'
+
+" theme inkstained-vim
+Plug 'yuttie/inkstained-vim'
+
+" theme hydrangea-vim
+Plug 'yuttie/hydrangea-vim'
+
 "auto save
 Plug 'Pocco81/AutoSave.nvim'
 
 "show loading thime
 Plug 'dstein64/vim-startuptime'
 
+" rust invspring 
 Plug 'rust-lang/rust.vim'
 
-"theme
-Plug 'sainnhe/gruvbox-material'
+
+" smooth slide
 Plug 'karb94/neoscroll.nvim'
 
+" 缩进线
 Plug 'Yggdroot/indentLine'
+
+" 底下标签
 Plug 'vim-airline/vim-airline'       
 Plug 'vim-airline/vim-airline-themes' "airline 的主题
+
+" 注释工具 
 Plug 'scrooloose/nerdcommenter'
-Plug 'crusoexia/vim-monokai'
-Plug 'preservim/nerdtree'
+
+" 文件树 
+" Plug 'preservim/nerdtree'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" 彩虹括号
 Plug 'luochen1990/rainbow'
+" ctag 辅助
 Plug 'majutsushi/tagbar'
+" cpp 增强
 Plug 'octol/vim-cpp-enhanced-highlight'
+
 Plug 'honza/vim-snippets'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'puremourning/vimspector'
 Plug 'tpope/vim-commentary'
 Plug 'vim-scripts/TaskList.vim'
 call plug#end()
-let b:coc_pairs_disabled = ['<']
 
-let g:vimspector_enable_mappings = 'HUMAN'
+" -----------------------------
+"
+
+" dashboard settings
+" Default value is clap
+let g:dashboard_default_executive ='telescope'
+"eg : "SPC mean the leaderkey
+let g:mapleader="\<Space>"
+let g:dashboard_default_executive ='telescope'
+nmap <Leader>ss :<C-u>SessionSave<CR>
+nmap <Leader>sl :<C-u>SessionLoad<CR>
+nnoremap <silent> <Leader>fh :DashboardFindHistory<CR>
+nnoremap <silent> <Leader>ff :DashboardFindFile<CR>
+nnoremap <silent> <Leader>tc :DashboardChangeColorscheme<CR>
+nnoremap <silent> <Leader>fa :DashboardFindWord<CR>
+nnoremap <silent> <Leader>fb :DashboardJumpMark<CR>
+nnoremap <silent> <Leader>cn :DashboardNewFile<CR>
+
+" telescope settings
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+
+" bufferline settings
+" In your init.lua or init.vim
+set termguicolors
+lua << EOF
+require("bufferline").setup{}
+EOF
+
+" hydrangea settings
+colorscheme hydrangea
+let g:lightline = {
+      \ 'colorscheme': 'hydrangea',
+      \ 'component': {
+      \   'readonly': '%{&readonly?"":""}',
+      \ },
+      \ 'separator':    { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '', 'right': '' },
+      \ }
+
 " 设置状态栏
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#buffer_nr_show = 0
-let g:airline#extensions#tabline#formatter = 'default'
-let g:airline_theme = 'bubblegum'  " 主题
+let g:airline#extensions#tabline#formatter = 'deus'
+let g:airline_theme = 'deus'  " 主题
 let g:airline#extensions#keymap#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#tabline#buffer_idx_format = {
@@ -62,6 +148,11 @@ let g:airline#extensions#tabline#buffer_idx_format = {
        \ '8': '8 ',
        \ '9': '9 '
        \}
+
+
+let b:coc_pairs_disabled = ['<']
+let g:vimspector_enable_mappings = 'HUMAN'
+
 " 设置切换tab的快捷键 <\> + <i> 切换到第i个 tab
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
@@ -90,86 +181,79 @@ let g:airline_symbols.readonly = "RO"
 let g:airline_symbols.dirty = "DT"
 let g:airline_symbols.crypt = "CR" 
 
-"add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
-" python 自动的会多加一个空格
-au FileType python let g:NERDSpaceDelims = 0
- 
-" Use compact syntax for prettified multi-line comments
-let g:NERDCompactSexyComs = 1
- 
-" Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
- 
-" Set a language to use its alternate delimiters by default
-let g:NERDAltDelims_java = 1
- 
-" Add your own custom formats or override the defaults
-" let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
- 
-" Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDCommentEmptyLines = 1
- 
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
- 
-" Enable NERDCommenterToggle to check all selected lines is commented or not
-let g:NERDToggleCheckAllLines = 1
+" nvim-tree
+lua <<EOF
+-- following options are the default
+-- each of these are documented in `:help nvim-tree.OPTION_NAME`
+require'nvim-tree'.setup {
+  disable_netrw       = true,
+  hijack_netrw        = true,
+  open_on_setup       = false,
+  ignore_ft_on_setup  = {},
+  auto_close          = false,
+  open_on_tab         = false,
+  hijack_cursor       = false,
+  update_cwd          = false,
+  update_to_buf_dir   = {
+    enable = true,
+    auto_open = true,
+  },
+  diagnostics = {
+    enable = false,
+    icons = {
+      hint = "",
+      info = "",
+      warning = "",
+      error = "",
+    }
+  },
+  update_focused_file = {
+    enable      = false,
+    update_cwd  = false,
+    ignore_list = {}
+  },
+  system_open = {
+    cmd  = nil,
+    args = {}
+  },
+  filters = {
+    dotfiles = false,
+    custom = {}
+  },
+  git = {
+    enable = true,
+    ignore = true,
+    timeout = 500,
+  },
+  view = {
+    width = 30,
+    height = 30,
+    hide_root_folder = false,
+    side = 'left',
+    auto_resize = false,
+    mappings = {
+      custom_only = false,
+      list = {}
+    },
+    number = false,
+    relativenumber = false,
+    signcolumn = "yes"
+  },
+  trash = {
+    cmd = "trash",
+    require_confirm = true
+  }
+}
+EOF
+nnoremap <F2> :NvimTreeToggle<CR>
 
-let g:rainbow_active = 1
-let g:rainbow_conf = {
-\   'guifgs': ['darkorange3', 'seagreen3', 'royalblue3', 'firebrick'],
-\   'ctermfgs': ['lightyellow', 'lightcyan','lightblue', 'lightmagenta'],
-\   'operators': '_,_',
-\   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
-\   'separately': {
-\       '*': {},
-\       'tex': {
-\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
-\       },
-\       'lisp': {
-\           'guifgs': ['darkorange3', 'seagreen3', 'royalblue3', 'firebrick'],
-\       },
-\       'vim': {
-\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
-\       },
-\       'html': {
-\           'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
-\       },
-\       'css': 0,
-\   }
-\}
-
-
-" autocmd vimenter * NERDTree  "自动开启Nerdtree
-let g:NERDTreeWinSize = 25 "设定 NERDTree 视窗大小
-let NERDTreeShowBookmarks=1  " 开启Nerdtree时自动显示Bookmarks
-"打开vim时如果没有文件自动打开NERDTree
-" autocmd vimenter * if !argc()|NERDTree|endif
-"当NERDTree为剩下的唯一窗口时自动关闭
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" 设置树的显示图标
-let g:NERDTreeDirArrowExpandable = '+'
-let g:NERDTreeDirArrowCollapsible = '-'
-let NERDTreeIgnore = ['\.pyc$']  " 过滤所有.pyc文件不显示
-let g:NERDTreeShowLineNumbers=0 " 是否显示行号
-let g:NERDTreeHidden=0     "不显示隐藏文件
-""Making it prettier
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-nnoremap <F2> :NERDTreeToggle<CR> " 开启/关闭nerdtree快捷键
-
-
-let g:tagbar_width=30
-nnoremap <silent> <F1> :TagbarToggle<CR> " 将tagbar的开关按键设置为 F4
-
-" if hidden is not set, TextEdit might fail.
+" if hidden is not set, textedit might fail.
 set hidden
-" Some servers have issues with backup files, see #649
+" some servers have issues with backup files, see #649
 set nobackup
 set nowritebackup
  
-" You will have bad experience for diagnostic messages when it's default 4000.
+" you will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
  
 " don't give |ins-completion-menu| messages.
@@ -178,35 +262,35 @@ set shortmess+=c
 " always show signcolumns
 set signcolumn=yes
  
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+" use tab for trigger completion with characters ahead and navigate.
+" use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <tab>
+      \ pumvisible() ? "\<c-n>" :
+      \ <sid>check_back_space() ? "\<tab>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<c-h>"
  
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
  
-" Use <c-space> to trigger completion.
+" use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
  
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" Or use `complete_info` if your vim support it, like:
-" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+" use <cr> to confirm completion, `<c-g>u` means break undo chain at current position.
+" coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<c-y>" : "\<c-g>u\<cr>"
+" or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<c-y>" : "\<c-g>u\<cr>"
  
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
+" use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <plug>(coc-diagnostic-prev)
+nmap <silent> ]g <plug>(coc-diagnostic-next)
+" remap keys for gotos
+nmap <silent> gd <plug>(coc-definition)
+nmap <silent> gy <plug>(coc-type-definition)
+nmap <silent> gi <plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
  
 " Use K to show documentation in preview window
@@ -262,7 +346,6 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 " use `:OR` for organize import of current buffer
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
-
 filetype plugin on
 " 设置为双字宽显示，否则无法完整显示如:☆
 " set ambiwidth=double
@@ -297,7 +380,6 @@ set history=1000 "设置历史记录条数
 " colo monokai
 " set background=dark
 set shortmess=atl
-" colorscheme desert
 "共享剪切板
 set clipboard+=unnamed 
 set cmdheight=3
@@ -313,6 +395,7 @@ set fileencoding=utf-8
 set updatetime=300
 set shortmess+=c
 set signcolumn=yes
+set modifiable
  
 " autocmd FileType json syntax match Comment +\/\/.\+$+
  
@@ -326,149 +409,43 @@ if has("autocmd")
     au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
-" Define mappings
-"cnoreabbrev sf Defx -listed -new
-"      \ -columns=indent:mark:icon:icons:filename:git:size
-"      \ -buffer-name=tab`tabpagenr()`<CR>
-nnoremap <silent>sf :<C-u>Defx -listed -resume
-      \ -columns=indent:mark:icon:icons:filename:git:size
-      \ -buffer-name=tab`tabpagenr()`
-      \ `expand('%:p:h')` -search=`expand('%:p')`<CR>
-nnoremap <silent>fi :<C-u>Defx -new `expand('%:p:h')` -search=`expand('%:p')`<CR>
 
-autocmd FileType defx call s:defx_my_settings()
-	function! s:defx_my_settings() abort
-	  " Define mappings
-	  nnoremap <silent><buffer><expr> <CR>
-	  \ defx#do_action('open')
-	  nnoremap <silent><buffer><expr> yy
-	  \ defx#do_action('copy')
-	  nnoremap <silent><buffer><expr> dd
-	  \ defx#do_action('move')
-	  nnoremap <silent><buffer><expr> pp
-	  \ defx#do_action('paste')
-	  nnoremap <silent><buffer><expr> l
-	  \ defx#do_action('open')
-	  nnoremap <silent><buffer><expr> <Right>
-	  \ defx#do_action('open')
-	  nnoremap <silent><buffer><expr> E
-	  \ defx#do_action('open', 'vsplit')
-	  nnoremap <silent><buffer><expr> n
-	  \ defx#do_action('open', 'pedit')
-	  nnoremap <silent><buffer><expr> i
-	  \ defx#do_action('open', 'choose')
-	  nnoremap <silent><buffer><expr> o
-	  \ defx#do_action('open_or_close_tree')
-	  nnoremap <silent><buffer><expr> K
-	  \ defx#do_action('new_directory')
-	  nnoremap <silent><buffer><expr> N
-	  \ defx#do_action('new_file')
-	  nnoremap <silent><buffer><expr> M
-	  \ defx#do_action('new_multiple_files')
-	  nnoremap <silent><buffer><expr> C
-	  \ defx#do_action('toggle_columns',
-	  \                'mark:indent:icon:filename:type:size:time')
-	  nnoremap <silent><buffer><expr> S
-	  \ defx#do_action('toggle_sort', 'time')
-	  nnoremap <silent><buffer><expr> dD
-	  \ defx#do_action('remove')
-	  nnoremap <silent><buffer><expr> a
-	  \ defx#do_action('rename')
-	  nnoremap <silent><buffer><expr> !
-	  \ defx#do_action('execute_command')
-	  nnoremap <silent><buffer><expr> x
-	  \ defx#do_action('execute_system')
-	  nnoremap <silent><buffer><expr> YY
-	  \ defx#do_action('yank_path')
-	  nnoremap <silent><buffer><expr> .
-	  \ defx#do_action('toggle_ignored_files')
-	  nnoremap <silent><buffer><expr> ;
-	  \ defx#do_action('repeat')
-	  nnoremap <silent><buffer><expr> h
-	  \ defx#do_action('cd', ['..'])
-	  nnoremap <silent><buffer><expr> <Left>
-	  \ defx#do_action('cd', ['..'])
-	  nnoremap <silent><buffer><expr> ~
-	  \ defx#do_action('cd')
-	  nnoremap <silent><buffer><expr> q
-	  \ defx#do_action('quit')
-	  nnoremap <silent><buffer><expr> <Space>
-	  \ defx#do_action('toggle_select') . 'j'
-	  nnoremap <silent><buffer><expr> m
-	  \ defx#do_action('toggle_select') . 'j'
-	  nnoremap <silent><buffer><expr> vv
-	  \ defx#do_action('toggle_select_all')
-	  nnoremap <silent><buffer><expr> *
-	  \ defx#do_action('toggle_select_all')
-	  nnoremap <silent><buffer><expr> j
-	  \ line('.') == line('$') ? 'gg' : 'j'
-	  nnoremap <silent><buffer><expr> k
-	  \ line('.') == 1 ? 'G' : 'k'
-	  nnoremap <silent><buffer><expr> <C-l>
-	  \ defx#do_action('redraw')
-	  nnoremap <silent><buffer><expr> <C-g>
-	  \ defx#do_action('print')
-	  nnoremap <silent><buffer><expr> cd
-	  \ defx#do_action('change_vim_cwd')
-	endfunction
+" neoscroll
+lua << EOF
+require('neoscroll').setup({
+    -- All these keys will be mapped to their corresponding default scrolling animation
+    mappings = {'<C-u>', '<C-d>', '<C-b>', '<C-f>',
+                '<C-y>', '<C-e>', 'zt', 'zz', 'zb'},
+    hide_cursor = true,          -- Hide cursor while scrolling
+    stop_eof = true,             -- Stop at <EOF> when scrolling downwards
+    use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
+    respect_scrolloff = false,   -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+    cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+    easing_function = nil,        -- Default easing function
+    pre_hook = nil,              -- Function to run before the scrolling animation starts
+    post_hook = nil,              -- Function to run after the scrolling animation ends
+})
 
-call defx#custom#column('icon', {
-      \ 'directory_icon': '▸',
-      \ 'opened_icon': '▾',
-      \ 'root_icon': ' ',
-      \ })
-call defx#custom#column('git', 'indicators', {
-  \ 'Modified'  : 'M',
-  \ 'Staged'    : '✚',
-  \ 'Untracked' : '✭',
-  \ 'Renamed'   : '➜',
-  \ 'Unmerged'  : '═',
-  \ 'Ignored'   : '☒',
-  \ 'Deleted'   : '✖',
-  \ 'Unknown'   : '?'
-  \ })
-
-"theme
-" Important!!
-if has('termguicolors')
-	set termguicolors
-endif
-" For dark version.
-set background=dark
-" For light version.
-"set background=light
-" Set contrast.
-" This configuration option should be placed before `colorscheme gruvbox-material`.
-" Available values: 'hard', 'medium'(default), 'soft'
-let g:gruvbox_material_background = 'medium'
-" 使用try，如果配色方案不存在，也不会报错
-try
-	colorscheme gruvbox-material
-catch /^Vim\%((\a\+)\)\=:E185/
-    " deal with it
-endtry
-
-lua require('neoscroll').setup({mappings = {'<C-u>', '<C-d>', '<C-b>', '<C-f>', '<C-y>', '<C-e>', 'zt', 'zz', 'zb'},hide_coursof = true,stop_eof = true, use_local_scrolloff = false, respect_scrolloff = false, cursor_scrolls_alone = true, easing_function = nil, pre_hook = nil, post_hook = nil, })
+EOF
 
 " === rust.vim 配置 ===
 syntax enable
 filetype plugin indent on
 " 保存时代码自动格式化
-let g:rustfmt_autosave = 1
+let g:rustfmt_autosave = 0
 
 " 手动调用格式化， Visual 模式下局部格式化，Normal 模式下当前文件内容格式化
 " 有时候代码有错误时，rust.vim 不会调用格式化，手动格式化就很方便
 vnoremap <leader>ft :RustFmtRange<CR>
 nnoremap <leader>ft :RustFmt<CR>
 " 设置编译运行 (来自 rust.vim，加命令行参数则使用命令 `:RustRun!`)
-nnoremap <M-r> :RustRun<CR>
+nnoremap <A-r> :RustRun<CR>
 " 使用 `:verbose nmap <M-t>` 检测 Alt-t是否被占用
 " 使用 `:verbose nmap` 则显示所有快捷键绑定信息
-nnoremap <M-t> :RustTest<CR>
+nnoremap <A-t> :RustTest<CR>
 
 lua << EOF
 local autosave = require("autosave")
-
 autosave.setup(
     {
         enabled = true,
@@ -488,19 +465,34 @@ autosave.setup(
 )
 EOF
 
-inoremap jk <Esc> "将jj映射到Esc
+
+" self settings
+inoremap jk <Esc> "将jk映射到Esc
+
 inoremap <C-h> <Left>
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
 inoremap <C-l> <Right>
-map <C-s> :w<CR>
+
+noremap <C-s> :w<CR>
+noremap Q :wq<CR>
+noremap R :source $MYVIMRC<CR>
+" 注释
 map <leader>. <leader>c<leader> 
+" wsl 与 win 剪贴板
 map <leader>y :!clip.exe < %<CR>
-map <leader>u :!make<CR>
-map <leader>i :!make clean<CR>
+" 快速编译
+map <leader>8 :Cargo r<CR>
+map <leader>9 :!make<CR>
+map <leader>0 :!make clean<CR>
+" 查看详细
+map <C-insert> gd
 map <C-delete> :bd<CR>
+" 切换buffer
 map <A-h> :bp<CR>
 map <A-l> :bn<CR>
-map <C-insert> gd
-map <C-n> :nohl<CR>
-
+" 取消搜索
+map <Esc> :nohl<CR>
+" 行头 行尾
+noremap H 0
+noremap L $
